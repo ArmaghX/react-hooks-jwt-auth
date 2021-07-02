@@ -1,12 +1,12 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:4000/api/test/';
+const apiTestUrl  = process.env.REACT_APP_API_URL_TEST;
 
 export const getPublicContent = () => {
-    return axios.get(API_URL + 'all');
+    return axios.get(apiTestUrl + 'all');
 };
 
 export const getUserBoard = () => {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
+    return axios.get(apiTestUrl + 'user', { headers: authHeader() });
 };
