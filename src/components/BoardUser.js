@@ -6,21 +6,15 @@ const BoardUser = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    getUserBoard().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        setContent(_content);
+    const fetchData = async () => {
+      try {
+          const response = await getUserBoard();
+          setContent(response.data);
+      } catch(error) {
+          setContent(error.message);
       }
-    );
+    }
+    fetchData();
   }, []);
 
   return (

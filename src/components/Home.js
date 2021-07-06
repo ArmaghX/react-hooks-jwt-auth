@@ -6,19 +6,15 @@ const Home = () => {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    getPublicContent().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-
-        setContent(_content);
+    const fetchData = async () => {
+      try {
+          const response = await getPublicContent();
+          setContent(response.data);
+      } catch(error) {
+          setContent(error.message);
       }
-    );
+    }
+    fetchData();
   }, []);
 
   return (

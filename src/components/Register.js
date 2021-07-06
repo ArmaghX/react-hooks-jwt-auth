@@ -57,45 +57,43 @@ const Register = (props) => {
   const [message, setMessage] = useState("");
 
   const onChangeUsername = (e) => {
-    const username = e.target.value;
-    setUsername(username);
+      const username = e.target.value;
+      setUsername(username);
   };
 
   const onChangeEmail = (e) => {
-    const email = e.target.value;
-    setEmail(email);
+      const email = e.target.value;
+      setEmail(email);
   };
 
   const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
+      const password = e.target.value;
+      setPassword(password);
   };
 
-  const handleRegister = (e) => {
-    e.preventDefault();
+  const handleRegister = async (e) => {
+      e.preventDefault();
 
-    setMessage("");
-    setSuccessful(false);
+      setMessage("");
+      setSuccessful(false);
 
-    form.current.validateAll();
-    if (checkBtn.current.context._errors.length === 0) {
-      register(username, email, password).then(
-        (response) => {
-          console.log(response)
+      form.current.validateAll();
+      if (checkBtn.current.context._errors.length === 0) {
+          const response = await register(username, email, password);
+          console.log(response);
           if(response.error) {
-            setMessage(response.error);
-            setSuccessful(false);
+              setMessage(response.error);
+              setSuccessful(false);
           } else {
-            setMessage(response?.message);
-            setSuccessful(true);
-            setInterval(() => {
-                  props.history.push("/profile");
-                  window.location.reload();
-            }, 2000);
+              setMessage(response?.message);
+              setSuccessful(true);
+              setInterval(() => {
+                    props.history.push("/profile");
+                    window.location.reload();
+              }, 2000);
           }
-      })
-    }
-  }
+      }
+  };
 
   return (
     <div className="col-md-12">

@@ -1,41 +1,43 @@
 import axios from 'axios';
 const apiAuthUrl  = process.env.REACT_APP_API_URL_AUTH;
 
-export const register = (username, email, password) => {
-    return axios
-    .post(apiAuthUrl + 'signup', 
-        {
-            username,
-            email,
-            password
-        },
-    )
-    .then(response => {
+export const register = async (username, email, password) => {
+    try {
+        const response = await axios
+            .post(apiAuthUrl + 'signup', 
+                {
+                    username,
+                    email,
+                    password
+                },
+            );
         if(response.data.accessToken) {
             localStorage.setItem('user', JSON.stringify(response.data));
         }
         return response.data;
-    })
-    .catch(() => {
+
+    } catch(error) {
+        console.log(error.message)
         return ({error: 'Username or Email already exist.'})
-    });
+    }
+
 };
 
-export const login = (username, password) => {
-    return axios
-        .post(apiAuthUrl + 'signin', {
-            username,
-            password
-        })
-        .then(response => {
-            if(response.data.accessToken) {
-                localStorage.setItem('user', JSON.stringify(response.data));
-            }
-            return response.data;
-        })
-        .catch(() => {
-            return ({error: 'User or Password are incorrect. Please try again.'})
-        });
+export const login = async (username, password) => {
+    try {
+        const response = await axios
+            .post(apiAuthUrl + 'signin', {
+                username,
+                password
+            });
+        if(response.data.accessToken) {
+            localStorage.setItem('user', JSON.stringify(response.data));
+        }
+        return response.data;
+    } catch(error) {
+        console.error(error.message);
+        return ({error: 'User or Password are incorrect. Please try again.'});
+    }
 };
 
 export const logout = () => {

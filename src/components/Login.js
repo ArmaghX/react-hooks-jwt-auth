@@ -26,44 +26,40 @@ const Login = (props) => {
   const [message, setMessage] = useState("");
 
   const onChangeUsername = (e) => {
-    const username = e.target.value;
-    setUsername(username);
+      const username = e.target.value;
+      setUsername(username);
   };
 
   const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
+      const password = e.target.value;
+      setPassword(password);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = async (e) => {
+      e.preventDefault();
 
-    setMessage("");
-    setLoading(true);
+      setMessage("");
+      setLoading(true);
 
-    form.current.validateAll();
+      form.current.validateAll();
 
-    if (checkBtn.current.context._errors.length === 0) {
-      login(username, password).then(
-        (response) => {
-          console.log(response)
-          if(response.error) {
-            setMessage(response.error);
-            setSuccessful(false);
-            setLoading(false);
-          } else {
-            setMessage(response?.message);
-            setSuccessful(true);
-            setInterval(() => {
-                  props.history.push("/profile");
-                  window.location.reload();
-            }, 2000);
-          }
-        }
-      );
-    } else {
-      setLoading(false);
-    }
+      if (checkBtn.current.context._errors.length === 0) {
+          const response = await login(username, password);
+              if(response.error) {
+                  setMessage(response.error);
+                  setSuccessful(false);
+                  setLoading(false);
+              } else {
+                  setMessage(response?.message);
+                  setSuccessful(true);
+                  setInterval(() => {
+                        props.history.push("/profile");
+                        window.location.reload();
+                  }, 2000);
+              }
+      } else {
+        setLoading(false);
+      }
   };
 
   return (
